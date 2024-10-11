@@ -157,7 +157,7 @@ Feel free to reach out if you encounter any issues!
 ### Tasks
 
 #### Create Task
-- **URL:** `/api/tasks`
+- **URL:** `/api/projects/:projectId/tasks`
 - **Method:** `POST`
 - **Description:** Creates a new task within a project.
 - **Request Body:**
@@ -201,7 +201,7 @@ Feel free to reach out if you encounter any issues!
 ### Comments
 
 #### Add Comment
-- **URL:** `/api/tasks/:taskId/comments`
+- **URL:** `/api/projects/:projectId/tasks/:taskId/comments`
 - **Method:** `POST`
 - **Description:** Adds a comment to a specific task.
 - **Request Body:**
