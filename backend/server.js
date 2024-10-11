@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("FriedFish Backend is running!");
+  res.send("Backend is running!");
 });
 
 const PORT = process.env.PORT || 5000;
