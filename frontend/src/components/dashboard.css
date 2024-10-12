@@ -1,0 +1,59 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar button {
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .workspace, .project-details {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .project-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .project-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .project-card:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .add-project {
+    margin-top: 20px;
+  }
+  
+  .add-project input {
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .project-details ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .project-details li {
+    margin-bottom: 10px;
+  }
+  
