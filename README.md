@@ -51,30 +51,33 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Create Project
 
-- **URL:** `/createProject`
+- **URL:** `projects/create`
 - **Method:** `POST`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
 - **Request Body:**
   ```json
   {
-    "name": "Project Name",
-    "members": ["user1@example.com", "user2@example.com"],
-    "start": "YYYY-MM-DD",
-    "end": "YYYY-MM-DD"
+    "Name": "Project Name",
+    "Members": ["user1@example.com", "user2@example.com"],
+    "StartDate": "YYYY-MM-DD",
+    "EndDate": "YYYY-MM-DD",
+    "Host": "UID"
+    "Tasks": []
   }
   ```
 - **Response:**
   - **Success (201):**
     ```json
     {
-      "projectId": "unique-project-id"
-    }
+      "message": "Project created successfully",
+      "projectID": "Sample Project ID"
+  }
     ```
 
 #### Get All Projects
 
-- **URL:** `/getAllProjects`
+- **URL:** `/projects`
 - **Method:** `GET`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -84,19 +87,19 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
     [
       {
         "projectId": "unique-project-id",
-        "name": "Project Name",
-        "host": "user@example.com",
-        "members": ["user1@example.com", "user2@example.com"],
-        "tasks": [],
-        "start": "YYYY-MM-DD",
-        "end": "YYYY-MM-DD"
-      }
+        "Name": "Project Name",
+        "Host": "user@example.com",
+        "Members": ["user1@example.com", "user2@example.com"],
+        "Tasks": [],
+        "StartDate": "YYYY-MM-DD",
+        "EndDate": "YYYY-MM-DD"
+      },
     ]
     ```
 
 #### Get Single Project
 
-- **URL:** `/getProject/:projectId`
+- **URL:** `/pojects/:projectId`
 - **Method:** `GET`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -105,34 +108,36 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
     ```json
     {
       "projectId": "unique-project-id",
-      "name": "Project Name",
-      "host": "user@example.com",
-      "members": ["user1@example.com", "user2@example.com"],
-      "tasks": [],
-      "start": "YYYY-MM-DD",
-      "end": "YYYY-MM-DD"
+      "Name": "Project Name",
+      "Host": "user@example.com",
+      "Members": ["user1@example.com", "user2@example.com"],
+      "Tasks": [],
+      "StartDate": "YYYY-MM-DD",
+      "EndDate": "YYYY-MM-DD"
     }
     ```
 
 #### Update Project
 
-- **URL:** `/updateProject/:projectId`
+- **URL:** `/projects/update/:projectId`
 - **Method:** `PUT`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
 - **Request Body:**
   ```json
   {
-    "name": "Updated Project Name",
-    "end": "YYYY-MM-DD"
-  }
+      "Name": "Project Name",
+      "Host": "user@example.com",
+      "Members": ["user1@example.com", "user2@example.com"],
+      "Tasks": [],
+      "StartDate": "YYYY-MM-DD",
+      "EndDate": "YYYY-MM-DD"
+    }
   ```
 - **Response:**
   - **Success (200):**
     ```json
-    {
-      "message": "Project updated successfully"
-    }
+    Project with projectID nCwZ7E has been updated
     ```
 
 ### Tasks
