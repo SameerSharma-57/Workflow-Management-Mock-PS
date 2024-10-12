@@ -13,7 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   // API Base URL
-  const API_BASE_URL = "http://localhost:5000"; // Change this according to your server's port
+  const API_BASE_URL = "http://localhost:5000/api"; // Change this according to your server's port
 
   // Handle Login
   const handleLogin = async () => {
