@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './AuthPage.css';
 
 const AuthPage = () => {
@@ -10,6 +11,9 @@ const AuthPage = () => {
   const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const API_BASE_URL = "http://localhost:<PORT>";
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isDarkMode) {
@@ -23,17 +27,64 @@ const AuthPage = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically handle the authentication logic
-    console.log(isLogin ? 'Logging in' : 'Signing up', { 
-      email, 
-      password, 
-      name, 
-      username, 
-      department, 
-      designation 
-    });
+  const handleSubmit = async () => {
+    if(!isLogin) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            name,
+            department,
+            designation,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Sign-up successful! Please log in.");
+          setIsLogin(true); // Switch to login form after sign-up
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        console.error("Sign Up Error: ", error);
+        alert("An error occurred during sign up");
+      }
+    }
+    else {
+      try {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          // Store the token in local storage
+          localStorage.setItem("token", data.token);
+          navigate("/dashboard"); // Redirect to dashboard on successful login
+        } else {
+          console.log("Login Response Error: ", data);  // Log detailed error response
+          alert(data.error || "Login failed.");
+        }
+      } catch (error) {
+        console.error("Login Error: ", error);  // Log any other error
+        alert("An error occurred during login");
+      }
+    }
   };
 
   const handleGoogleLogin = () => {
