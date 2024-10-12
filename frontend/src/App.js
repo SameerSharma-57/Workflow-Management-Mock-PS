@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/dashboard.jsx';
+import { jwtDecode } from 'jwt-decode'; 
 import { Navigate } from 'react-router-dom';
 
 function App() {
@@ -25,7 +26,7 @@ const PrivateRoute = ({ children }) => {
 
   // Optionally, decode the token to check its expiration
   try {
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
     const currentTime = Date.now() / 1000; // in seconds
     if (decoded.exp < currentTime) {
       localStorage.removeItem("token");
