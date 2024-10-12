@@ -12,7 +12,7 @@ const AuthPage = () => {
   const [designation, setDesignation] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const API_BASE_URL = "http://localhost:<PORT>";
+  const API_BASE_URL = "http://localhost:5000/api/auth";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,8 +27,11 @@ const AuthPage = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleSubmit = async () => {
-    if(!isLogin) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();  // Prevent page reload on form submission
+  
+    if (!isLogin) {
+      // Sign-up logic
       try {
         const response = await fetch(`${API_BASE_URL}/signup`, {
           method: "POST",
@@ -39,25 +42,27 @@ const AuthPage = () => {
             email,
             password,
             name,
+            username,
             department,
             designation,
           }),
         });
-
-        const data = await response.json();
-
+  
+        const data = await response.json();  // Parse JSON response
+        console.log(data);  // Log response for debugging
+  
         if (response.ok) {
           alert("Sign-up successful! Please log in.");
-          setIsLogin(true); // Switch to login form after sign-up
+          setIsLogin(true);  // Switch to login view
         } else {
-          alert(data.error);
+          alert(data.error || "Sign-up failed.");
         }
       } catch (error) {
-        console.error("Sign Up Error: ", error);
-        alert("An error occurred during sign up");
+        console.error("Sign-up error: ", error);
+        alert("An error occurred during sign-up.");
       }
-    }
-    else {
+    } else {
+      // Login logic
       try {
         const response = await fetch(`${API_BASE_URL}/login`, {
           method: "POST",
@@ -69,23 +74,23 @@ const AuthPage = () => {
             password,
           }),
         });
-    
-        const data = await response.json();
-    
+  
+        const data = await response.json();  // Parse JSON response
+        console.log(data);  // Log response for debugging
+  
         if (response.ok) {
-          // Store the token in local storage
-          localStorage.setItem("token", data.token);
-          navigate("/dashboard"); // Redirect to dashboard on successful login
+          localStorage.setItem("token", data.token);  // Store token
+          navigate("/dashboard");  // Redirect to dashboard
         } else {
-          console.log("Login Response Error: ", data);  // Log detailed error response
           alert(data.error || "Login failed.");
         }
       } catch (error) {
-        console.error("Login Error: ", error);  // Log any other error
-        alert("An error occurred during login");
+        console.error("Login error: ", error);
+        alert("An error occurred during login.");
       }
     }
   };
+  
 
   const handleGoogleLogin = () => {
     // Handle Google login logic here

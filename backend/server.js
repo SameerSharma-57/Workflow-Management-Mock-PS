@@ -15,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(cors());
 
 // import serviceAccount from "./config/serviceAccountKey.json" assert { type: "json" }; // Ensure correct path
 
@@ -25,9 +26,9 @@ app.use(express.json());
 // const db = admin.firestore();
 
 //API Endpoints
-app.use("/auth", authRoutes)
-app.use("/projects", projectRoutes(db)); //includes get getAllProjects, getProjectByProjectID, updateProjectByProjectID
-app.use("/tasks", taskRoutes(db)); //includes get getAllTasks, getTaskByTaskID, updateTaskByTaskID
+app.use("/api/auth", authRoutes)
+app.use("/api/projects", projectRoutes(db)); //includes get getAllProjects, getProjectByProjectID, updateProjectByProjectID
+app.use("/api/tasks", taskRoutes(db)); //includes get getAllTasks, getTaskByTaskID, updateTaskByTaskID
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");
