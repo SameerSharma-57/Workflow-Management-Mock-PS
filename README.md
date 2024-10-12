@@ -39,7 +39,7 @@ Feel free to reach out if you encounter any issues!
 ### Authentication
 
 #### Sign Up
-- **URL:** `/api/auth/signup`
+- **URL:** `/auth/signup`
 - **Method:** `POST`
 - **Description:** Registers a new user.
 - **Request Body:**
@@ -51,6 +51,7 @@ Feel free to reach out if you encounter any issues!
     "username": "johndoe",
     "department": "Engineering",
     "designation": "Developer"
+    "UID": "unique-user-id"
   }
   ```
 - **Response:**
@@ -68,7 +69,7 @@ Feel free to reach out if you encounter any issues!
     ```
 
 #### Login
-- **URL:** `/api/auth/login`
+- **URL:** `/auth/login`
 - **Method:** `POST`
 - **Description:** Authenticates a user and returns a token along with user details.
 - **Request Body:**
@@ -98,7 +99,7 @@ Feel free to reach out if you encounter any issues!
     ```
 
 #### Logout
-- **URL:** `/api/auth/logout`
+- **URL:** `/auth/logout`
 - **Method:** `POST`
 - **Description:** Logs out the user.
 - **Response:**
@@ -112,7 +113,7 @@ Feel free to reach out if you encounter any issues!
 ### Projects
 
 #### Create Project
-- **URL:** `/api/projects`
+- **URL:** `/createProject`
 - **Method:** `POST`
 - **Description:** Creates a new project.
 - **Request Body:**
@@ -135,7 +136,7 @@ Feel free to reach out if you encounter any issues!
     ```
 
 #### Get All Projects
-- **URL:** `/api/projects`
+- **URL:** `/getAllProjects`
 - **Method:** `GET`
 - **Description:** Retrieves all projects.
 - **Response:**
@@ -157,7 +158,7 @@ Feel free to reach out if you encounter any issues!
 ### Tasks
 
 #### Create Task
-- **URL:** `/api/projects/:projectId/tasks`
+- **URL:** `/projects/projectId/createTask`
 - **Method:** `POST`
 - **Description:** Creates a new task within a project.
 - **Request Body:**
@@ -180,7 +181,7 @@ Feel free to reach out if you encounter any issues!
     ```
 
 #### Get All Tasks for a Project
-- **URL:** `/api/projects/:projectId/tasks`
+- **URL:** `/projects/projectId/getAllTasks`
 - **Method:** `GET`
 - **Description:** Retrieves all tasks associated with a specific project.
 - **Response:**
@@ -201,7 +202,7 @@ Feel free to reach out if you encounter any issues!
 ### Comments
 
 #### Add Comment
-- **URL:** `/api/projects/:projectId/tasks/:taskId/comments`
+- **URL:** `/project/projectId/task/taskId/addComment`
 - **Method:** `POST`
 - **Description:** Adds a comment to a specific task.
 - **Request Body:**
