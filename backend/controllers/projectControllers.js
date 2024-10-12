@@ -1,5 +1,5 @@
 
-
+import { db } from "../config/firebase.js";
 // Controller to fetch all projects from Firestore
 export const getAllProjects = async (db, res) => {
     try {
