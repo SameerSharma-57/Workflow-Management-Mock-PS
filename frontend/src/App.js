@@ -16,5 +16,26 @@ function App() {
     </div>
   );
 }
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/" />;
+  }
 
+  // Optionally, decode the token to check its expiration
+  try {
+    const decoded = jwt_decode(token);
+    const currentTime = Date.now() / 1000; // in seconds
+    if (decoded.exp < currentTime) {
+      localStorage.removeItem("token");
+      return <Navigate to="/" />;
+    }
+  } catch (error) {
+    console.error("Token decoding error: ", error);
+    localStorage.removeItem("token");
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
 export default App;

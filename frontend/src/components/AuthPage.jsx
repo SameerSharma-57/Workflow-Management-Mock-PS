@@ -1,5 +1,7 @@
+// src/components/AuthPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode'; 
 import './AuthPage.css';
 
 const AuthPage = () => {
@@ -15,13 +17,34 @@ const AuthPage = () => {
   const API_BASE_URL = "http://localhost:5000/api/auth";
   const navigate = useNavigate();
 
+  // Function to check token validity
+  const checkToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000; // in seconds
+        if (decoded.exp && decoded.exp > currentTime) {
+          navigate("/dashboard"); // Redirect to dashboard if token is valid
+        } else {
+          localStorage.removeItem("token"); // Remove expired token
+        }
+      } catch (error) {
+        console.error("Token decoding error: ", error);
+        localStorage.removeItem("token"); // Remove invalid token
+      }
+    }
+  };
+
   useEffect(() => {
+    checkToken(); // Check token on component mount
+
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
-  }, [isDarkMode]);
+  }, [isDarkMode, navigate]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -29,7 +52,7 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();  // Prevent page reload on form submission
-  
+
     if (!isLogin) {
       // Sign-up logic
       try {
@@ -47,10 +70,10 @@ const AuthPage = () => {
             designation,
           }),
         });
-  
+
         const data = await response.json();  // Parse JSON response
         console.log(data);  // Log response for debugging
-  
+
         if (response.ok) {
           alert("Sign-up successful! Please log in.");
           setIsLogin(true);  // Switch to login view
@@ -74,10 +97,10 @@ const AuthPage = () => {
             password,
           }),
         });
-  
+
         const data = await response.json();  // Parse JSON response
         console.log(data);  // Log response for debugging
-  
+
         if (response.ok) {
           localStorage.setItem("token", data.token);  // Store token
           navigate("/dashboard");  // Redirect to dashboard
@@ -90,7 +113,6 @@ const AuthPage = () => {
       }
     }
   };
-  
 
   const handleGoogleLogin = () => {
     // Handle Google login logic here
