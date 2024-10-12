@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllProjects,getProjectByProjectID,updateProjectByProjectID,createProject } from "../controllers/projectControllers.js";
+import { getAllProjects,getProjectByProjectID,updateProjectByProjectID,createProject,addMemberToProject,addTaskToProject } from "../controllers/projectControllers.js";
 
 const router = express.Router();
 
@@ -26,6 +26,18 @@ export default (db) => {
   router.post("/create", (req, res) => {
     const newProjectData = req.body; // The new project data is sent in the request body
     createProject(db, newProjectData, res); // Pass data to the controller
+  });
+
+  // Route to add a member to a project
+  router.post("/add-member", (req, res) => {
+    const { projectID, newMemberUID } = req.body; // The project ID and new member are sent in the request body
+    addMemberToProject(db, projectID, newMemberUID, res); // Pass projectID and member data to the controller
+  });
+
+  // Route to add a member to a project
+  router.post("/add-task", (req, res) => {
+    const { projectID, taskID } = req.body; // The project ID and new member are sent in the request body
+    addTaskToProject(db, projectID, taskID, res); // Pass taskID and member data to the controller
   });
 
   return router;

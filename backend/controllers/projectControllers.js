@@ -1,4 +1,6 @@
 // Controller to fetch all projects from Firestore
+import {admin} from "../config/firebase.js"
+
 export const getAllProjects = async (db, res) => {
     try {
       const projectsRef = db.collection("projects");
@@ -86,6 +88,36 @@ export const createProject = async (db, newProjectData, res) => {
       res.status(201).json({ message: "Project created successfully", projectID });
   } catch (error) {
       res.status(500).json({ error: `Failed to create project: ${error.message}` });
+  }
+};
+
+export const addMemberToProject = async (db, projectID, newMemberUID, res) => {
+  try {
+      // Ensure the member is added to the 'members' array field
+      const projectRef = db.collection('projects').doc(projectID);
+      
+      await projectRef.update({
+          Members: admin.firestore.FieldValue.arrayUnion(newMemberUID)
+      });
+      
+      res.status(200).json({ message: "Member added successfully" });
+  } catch (error) {
+      res.status(500).json({ error: `Failed to add member: ${error.message}` });
+  }
+};
+
+export const addTaskToProject = async (db, projectID, taskID, res) => {
+  try {
+      // Ensure the member is added to the 'members' array field
+      const projectRef = db.collection('projects').doc(projectID);
+      
+      await projectRef.update({
+          Tasks: admin.firestore.FieldValue.arrayUnion(taskID)
+      });
+      
+      res.status(200).json({ message: "Task added successfully" });
+  } catch (error) {
+      res.status(500).json({ error: `Failed to add task: ${error.message}` });
   }
 };
   
