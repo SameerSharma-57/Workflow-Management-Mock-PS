@@ -3,9 +3,11 @@
 ## Setup Instructions
 
 ### 1. Install Dependencies
+
 Every time you pull the latest changes from the repository, run the following commands to ensure all dependencies are installed:
 
 - In the **root** folder:
+
   ```bash
   npm install
   ```
@@ -17,7 +19,9 @@ Every time you pull the latest changes from the repository, run the following co
   ```
 
 ### 2. Start the Application
+
 To start the application, run the following command in the **root** folder:
+
 ```bash
 npm run start
 ```
@@ -25,6 +29,7 @@ npm run start
 This will start both the backend and frontend (if configured in the scripts).
 
 ### 3. Private Files
+
 - Private files such as `.env` and Firebase configuration files are not included in this repository.
 - Links to these files will be provided separately and will be updated when necessary.
 
@@ -36,139 +41,120 @@ Feel free to reach out if you encounter any issues!
 
 ## API Endpoints
 
+Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
+
 ### Authentication
 
-#### Sign Up
-- **URL:** `/api/auth/signup`
-- **Method:** `POST`
-- **Description:** Registers a new user.
-- **Request Body:**
-  ```json
-  {
-    "email": "user@example.com",
-    "password": "yourpassword",
-    "name": "John Doe",
-    "username": "johndoe",
-    "department": "Engineering",
-    "designation": "Developer"
-  }
-  ```
-- **Response:**
-  - **Success (201):**
-    ```json
-    {
-      "uid": "unique-user-id"
-    }
-    ```
-  - **Error (400):**
-    ```json
-    {
-      "error": "Error message"
-    }
-    ```
-
-#### Login
-- **URL:** `/api/auth/login`
-- **Method:** `POST`
-- **Description:** Authenticates a user and returns a token along with user details.
-- **Request Body:**
-  ```json
-  {
-    "email": "user@example.com",
-    "password": "yourpassword"
-  }
-  ```
-- **Response:**
-  - **Success (200):**
-    ```json
-    {
-      "uid": "unique-user-id",
-      "name": "John Doe",
-      "username": "johndoe",
-      "department": "Engineering",
-      "designation": "Developer",
-      "token": "your-jwt-token"
-    }
-    ```
-  - **Error (400):**
-    ```json
-    {
-      "error": "Invalid email or password"
-    }
-    ```
-
-#### Logout
-- **URL:** `/api/auth/logout`
-- **Method:** `POST`
-- **Description:** Logs out the user.
-- **Response:**
-  - **Success (200):**
-    ```json
-    {
-      "message": "Logout successful"
-    }
-    ```
+[Authentication endpoints remain unchanged]
 
 ### Projects
 
 #### Create Project
-- **URL:** `/api/projects`
+
+- **URL:** `projects/create`
 - **Method:** `POST`
-- **Description:** Creates a new project.
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
 - **Request Body:**
   ```json
   {
-    "name": "Project Name",
-    "host": "user@example.com",
-    "members": ["user1@example.com", "user2@example.com"],
-    "tasks": [],
-    "start": "YYYY-MM-DD",
-    "end": "YYYY-MM-DD"
+    "Name": "Project Name",
+    "Members": ["user1@example.com", "user2@example.com"],
+    "StartDate": "YYYY-MM-DD",
+    "EndDate": "YYYY-MM-DD",
+    "Host": "UID"
+    "Tasks": []
   }
   ```
 - **Response:**
   - **Success (201):**
     ```json
     {
-      "projectId": "unique-project-id"
-    }
+      "message": "Project created successfully",
+      "projectID": "Sample Project ID"
+  }
     ```
 
 #### Get All Projects
-- **URL:** `/api/projects`
+
+- **URL:** `/projects`
 - **Method:** `GET`
-- **Description:** Retrieves all projects.
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
 - **Response:**
   - **Success (200):**
     ```json
     [
       {
         "projectId": "unique-project-id",
-        "name": "Project Name",
-        "host": "user@example.com",
-        "members": ["user1@example.com", "user2@example.com"],
-        "tasks": [],
-        "start": "YYYY-MM-DD",
-        "end": "YYYY-MM-DD"
-      }
+        "Name": "Project Name",
+        "Host": "user@example.com",
+        "Members": ["user1@example.com", "user2@example.com"],
+        "Tasks": [],
+        "StartDate": "YYYY-MM-DD",
+        "EndDate": "YYYY-MM-DD"
+      },
     ]
+    ```
+
+#### Get Single Project
+
+- **URL:** `/pojects/:projectId`
+- **Method:** `GET`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Response:**
+  - **Success (200):**
+    ```json
+    {
+      "projectId": "unique-project-id",
+      "Name": "Project Name",
+      "Host": "user@example.com",
+      "Members": ["user1@example.com", "user2@example.com"],
+      "Tasks": [],
+      "StartDate": "YYYY-MM-DD",
+      "EndDate": "YYYY-MM-DD"
+    }
+    ```
+
+#### Update Project
+
+- **URL:** `/projects/update/:projectId`
+- **Method:** `PUT`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Request Body:**
+  ```json
+  {
+      "Name": "Project Name",
+      "Host": "user@example.com",
+      "Members": ["user1@example.com", "user2@example.com"],
+      "Tasks": [],
+      "StartDate": "YYYY-MM-DD",
+      "EndDate": "YYYY-MM-DD"
+    }
+  ```
+- **Response:**
+  - **Success (200):**
+    ```json
+    Project with projectID nCwZ7E has been updated
     ```
 
 ### Tasks
 
 #### Create Task
-- **URL:** `/api/projects/:projectId/tasks`
+
+- **URL:** `/createTask/:projectId`
 - **Method:** `POST`
-- **Description:** Creates a new task within a project.
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
 - **Request Body:**
   ```json
   {
     "name": "Task Name",
     "status": "Pending",
     "dueDate": "YYYY-MM-DD",
-    "assignee": "user@example.com",
-    "projectId": "unique-project-id",
-    "comments": []
+    "assignee": "user@example.com"
   }
   ```
 - **Response:**
@@ -180,9 +166,11 @@ Feel free to reach out if you encounter any issues!
     ```
 
 #### Get All Tasks for a Project
-- **URL:** `/api/projects/:projectId/tasks`
+
+- **URL:** `/getAllTasks/:projectId`
 - **Method:** `GET`
-- **Description:** Retrieves all tasks associated with a specific project.
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
 - **Response:**
   - **Success (200):**
     ```json
@@ -198,16 +186,57 @@ Feel free to reach out if you encounter any issues!
     ]
     ```
 
-### Comments
+#### Get Single Task
 
-#### Add Comment
-- **URL:** `/api/projects/:projectId/tasks/:taskId/comments`
-- **Method:** `POST`
-- **Description:** Adds a comment to a specific task.
+- **URL:** `/getTask/:projectId/:taskId`
+- **Method:** `GET`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Response:**
+  - **Success (200):**
+    ```json
+    {
+      "taskId": "unique-task-id",
+      "name": "Task Name",
+      "status": "Pending",
+      "dueDate": "YYYY-MM-DD",
+      "assignee": "user@example.com",
+      "comments": []
+    }
+    ```
+
+#### Update Task
+
+- **URL:** `/updateTask/:projectId/:taskId`
+- **Method:** `PUT`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
 - **Request Body:**
   ```json
   {
-    "userId": "user@example.com",
+    "status": "In Progress",
+    "dueDate": "YYYY-MM-DD"
+  }
+  ```
+- **Response:**
+  - **Success (200):**
+    ```json
+    {
+      "message": "Task updated successfully"
+    }
+    ```
+
+### Comments
+
+#### Add Comment
+
+- **URL:** `/addComment/:projectId/:taskId`
+- **Method:** `POST`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Request Body:**
+  ```json
+  {
     "text": "This is a comment."
   }
   ```
@@ -217,4 +246,23 @@ Feel free to reach out if you encounter any issues!
     {
       "commentId": "unique-comment-id"
     }
+    ```
+
+#### Get Comments for a Task
+
+- **URL:** `/getComments/:projectId/:taskId`
+- **Method:** `GET`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Response:**
+  - **Success (200):**
+    ```json
+    [
+      {
+        "commentId": "unique-comment-id",
+        "userId": "user@example.com",
+        "text": "This is a comment.",
+        "timestamp": "YYYY-MM-DD HH:MM:SS"
+      }
+    ]
     ```

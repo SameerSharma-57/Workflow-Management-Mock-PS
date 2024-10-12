@@ -1,3 +1,10 @@
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import admin from "firebase-admin";
+import productRoutes from "./routes/productRoutes.js"; 
+
 // backend/controllers/authControllers.js
 import { admin, db } from "../config/firebase.js";
 import jwt from "jsonwebtoken";
