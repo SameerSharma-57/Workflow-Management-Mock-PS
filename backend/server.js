@@ -23,6 +23,7 @@ const db = admin.firestore();
 
 //API Endpoints
 app.use("/projects", projectRoutes(db)); //includes get getAllProjects, getProjectByProjectID, updateProjectByProjectID
+app.use("/tasks", taskRoutes(db)); //includes get getAllTasks, getTaskByTaskID, updateTaskByTaskID
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

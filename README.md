@@ -144,7 +144,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Create Task
 
-- **URL:** `/createTask/:projectId`
+- **URL:** `/tasks/createTask/:projectId`
 - **Method:** `POST`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -167,7 +167,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Get All Tasks for a Project
 
-- **URL:** `/getAllTasks/:projectId`
+- **URL:** `/tasks/getAllTasks/:projectId`
 - **Method:** `GET`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -188,7 +188,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Get Single Task
 
-- **URL:** `/getTask/:projectId/:taskId`
+- **URL:** `/tasks/getTask/:projectId/:taskId`
 - **Method:** `GET`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -207,7 +207,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Update Task
 
-- **URL:** `/updateTask/:projectId/:taskId`
+- **URL:** `/tasks/updateTask/:projectId/:taskId`
 - **Method:** `PUT`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
