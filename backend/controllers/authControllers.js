@@ -3,13 +3,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import admin from "firebase-admin";
-import productRoutes from "./routes/productRoutes.js"; 
+// import productRoutes from "./routes/productRoutes.js"; 
 
 // backend/controllers/authControllers.js
-import { admin, db } from "../config/firebase.js";
+import { auth, db } from "../config/firebase.js";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import dotenv from "dotenv";
 
 dotenv.config();
 
