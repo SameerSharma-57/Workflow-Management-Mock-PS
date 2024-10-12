@@ -3,9 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import admin from "firebase-admin";
-// import projectRoutes from "./routes/projectRoutes.js"; 
-import authRoutes from "./routes/authRoutes.js"
-import { db } from "./config/firebase.js";
+import projectRoutes from "./routes/projectRoutes.js"; 
 
 dotenv.config();
 
@@ -15,9 +13,17 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.json());
 
+import serviceAccount from "./config/serviceAcountKey.json" assert { type: "json" }; // Ensure correct path
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
+
+const db = admin.firestore();
+
 //API Endpoints
-app.use('/api/auth', authRoutes);
-// app.use("/projects", projectRoutes(db)); //includes get getAllProjects, getProjectByProjectID, updateProjectByProjectID
+app.use("/projects", projectRoutes(db)); //includes get getAllProjects, getProjectByProjectID, updateProjectByProjectID
+app.use("/tasks", taskRoutes(db)); //includes get getAllTasks, getTaskByTaskID, updateTaskByTaskID
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");
