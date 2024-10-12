@@ -140,6 +140,50 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
     Project with projectID nCwZ7E has been updated
     ```
 
+#### Add Member to the Project
+
+- **URL:** `/projects/add-member`
+- **Method:** `POST`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Request Body:**
+  ```json
+  {
+  "projectID": "DEMOPID1",
+  "newMemberUID": "demomember1"
+  }
+
+  ```
+- **Response:**
+  - **Success (200):**
+    ```json
+    {
+    "message": "Member added successfully"
+    }
+    ```
+
+#### Add Task to the Project
+
+- **URL:** `/projects/add-task`
+- **Method:** `POST`
+- **Headers:**
+  - `Authorization: Bearer <jwt-token>`
+- **Request Body:**
+  ```json
+  {
+  "projectID": "DEMOPID1",
+  "taskID": "demotask1"
+  }
+
+  ```
+- **Response:**
+  - **Success (200):**
+    ```json
+    {
+    "message": "Task added successfully"
+    }
+    ```
+
 ### Tasks
 
 #### Create Task
