@@ -11,7 +11,7 @@ function App() {
       <Router>
       <Routes>
         <Route path="/" element={<AuthPage />} />
-        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
       </Routes>
     </Router>
       
@@ -24,8 +24,7 @@ const PrivateRoute = ({ children }) => {
     return <Navigate to="/" />;
   }
 
-  // Optionally, decode the token to check its expiration
-  try {
+  try { //to check the expiration of token
     const decoded = jwtDecode(token);
     const currentTime = Date.now() / 1000; // in seconds
     if (decoded.exp < currentTime) {
