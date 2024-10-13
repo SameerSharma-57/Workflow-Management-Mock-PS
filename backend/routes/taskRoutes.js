@@ -6,14 +6,13 @@ const router = express.Router();
 export default (db) => {
     //all tasks of a project
   router.get("/getAllTasks/:projectId", (req, res) => {
-    const proID = req.params;
-    getAllTasks(db,proID, res);
+    const { projectId } = req.params; // Corrected to extract projectId directly
+    getAllTasks(db, projectId, res); // Updated to use projectId
   });
 
   //single task of a project
   router.get("/getTask/:projectID/:taskID", (req, res) => {
-    const { projectID } = req.params;
-    const {taskID} = req.params;
+    const { projectID, taskID } = req.params; // Destructured both parameters in one line
     getTaskByTaskID(db, projectID, taskID, res);
   });
 

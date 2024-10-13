@@ -82,7 +82,7 @@ export const updateTaskByTaskID = async (db, projectID, taskID, updatedData, res
     }
 };
 
-// Function to generate a random 6-character alphanumeric project ID
+// Function to generate a random 6-character alphanumeric task ID
 const generatetaskID = () => {
   const characters = '0123456789';
   let taskID = 'TSK';

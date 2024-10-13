@@ -14,7 +14,6 @@ const app = express();
 
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(express.json());
 app.use(cors());
 
 // import serviceAccount from "./config/serviceAccountKey.json" assert { type: "json" }; // Ensure correct path
