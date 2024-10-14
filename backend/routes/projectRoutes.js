@@ -29,7 +29,7 @@ export default (db) => {
   });
 
   // Route to add a member to a project
-  router.post("/add-member", (req, res) => {
+  router.post("/:projectID/add-member", (req, res) => {
     const { projectID, newMemberUID } = req.body; // The project ID and new member are sent in the request body
     addMemberToProject(db, projectID, newMemberUID, res); // Pass projectID and member data to the controller
   });
