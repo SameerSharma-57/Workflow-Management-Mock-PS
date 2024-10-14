@@ -14,15 +14,28 @@ const Dashboard = () => {
   const [newMember, setNewMember] = useState(""); // New member name
 
   const navigate = useNavigate();
-
-  // Simulated fetch to get projects (replace with real API call)
+  const API_BASE_URL = "http://localhost:5000/api";
+  
   useEffect(() => {
     const fetchProjects = async () => {
-      const mockProjects = [
-        { id: 1, name: "Project Alpha", tasks: [{ task: "Task 1", assignee: "Rishi", status: "In Progress" }, { task: "Task 2", assignee: "xyz", status: "Completed" }] },
-        { id: 2, name: "Project Beta", tasks: [{ task: "Task 1", assignee: "xyz", status: "Not Started" }] },
-      ];
-      setProjects(mockProjects);
+      try {
+        const response = await fetch(`${API_BASE_URL}/projects/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Error fetching projects");
+        }
+  
+        const data = await response.json(); // Parse the response data
+        setProjects(data); // Set the fetched projects
+        console.log(data);
+      } catch (err) {
+        console.error("Error:", err);
+      }
     };
     fetchProjects();
   }, []);
@@ -30,14 +43,14 @@ const Dashboard = () => {
   // Handle logout
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
+      const response = await fetch(`${API_BASE_URL}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
+  
       if (response.ok) {
         localStorage.removeItem("token");
         navigate("/");
@@ -50,40 +63,166 @@ const Dashboard = () => {
     }
   };
 
-  // Handle adding new project
-  const handleAddProject = () => {
+  // Handle adding a new project
+  const handleAddProject = async () => {
     if (newProjectName) {
-      const newProject = { id: projects.length + 1, name: newProjectName, tasks: [] };
-      setProjects([...projects, newProject]);
-      setNewProjectName("");
-    }
-  };
+      try {
+        const response = await fetch(`${API_BASE_URL}/projects/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newProjectName }), // Sending new project name to backend
+        });
 
-  // Handle adding new task to the selected project
-  const handleAddTask = () => {
-    if (newTask.task && newTask.assignee) {
-      const updatedProjects = projects.map((project) => {
-        if (project.id === selectedProject.id) {
-          return {
-            ...project,
-            tasks: [...project.tasks, newTask],
-          };
+        if (!response.ok) {
+          throw new Error("Failed to create project");
         }
-        return project;
-      });
-      setProjects(updatedProjects);
-      setNewTask({ task: "", assignee: "", status: "Not Started" });
-      setShowAddTask(false);
+
+        const data = await response.json();
+        setProjects([...projects, { id: data.projectID, name: newProjectName, tasks: [] }]); // Add the new project locally
+        setNewProjectName(""); // Reset the input field
+        
+      } catch (err) {
+        console.error("Error:", err);
+      }
     }
   };
 
-  // Handle adding new member to the selected project (in this example, a member is just added as a task assignee)
-  const handleAddMember = () => {
-    if (newMember) {
-      // In a real scenario, you might want to manage a separate member list, but here it's a basic example
-      alert(`${newMember} added as a project member.`);
-      setNewMember("");
-      setShowAddMember(false);
+  const getProjectByProjectID = async (project) =>{
+    console.log("Selected project:", project); // Debugging line
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${project.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch project details");
+    }
+
+    const data = await response.json();
+
+    const response2 = await fetch(`${API_BASE_URL}/tasks/getAllTasks/${project.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch project details");
+    }
+    const task_data = await response2.json();
+    
+    data.tasks = task_data.tasks;
+    setSelectedProject(data);
+    console.log(data);
+  } catch (err) {
+    console.error("Error:", err);
+  }
+  };
+  // Handle adding a new task to the selected project
+  const handleAddTask = async () => {
+    // Ensure that new task details and the selected project are available
+    if (newTask.task && newTask.assignee && selectedProject) {
+      try {
+        // Use the correct API endpoint for adding a task
+        console.log(newTask);
+        console.log(selectedProject.id);
+        const response = await fetch(`${API_BASE_URL}/tasks/createTask/${selectedProject.id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Only send the new task data as JSON in the body
+          body: JSON.stringify(newTask),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to add task");
+        }
+  
+        // Get the response data (the created task)
+        const data = await response.json();
+  
+        // Update the local projects state with the new task added
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === selectedProject.id
+              ? { ...project, tasks: [...project.tasks, data] } // Add the newly created task
+              : project
+          )
+        );
+  
+        // Reset task form fields after successful submission
+        setNewTask({ task: "", assignee: "", status: "Not Started" });
+        setShowAddTask(false); // Close the task form
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    } else {
+      console.warn("Please fill in all fields to add a task.");
+    }
+  };
+  
+
+  const handleUpdateTask = async (projectId, taskId, updatedTask) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/tasks/updateTask/${projectId}/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask), // Send updated task details
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+  
+      const data = await response.json();
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId
+            ? {
+                ...project,
+                tasks: project.tasks.map((task) =>
+                  task.id === taskId ? data : task // Update the task in the project
+                ),
+              }
+            : project
+        )
+      );
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
+  
+
+  // Handle adding a new member to the selected project
+  const handleAddMember = async () => {
+    if (newMember && selectedProject) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/projects/${selectedProject.id}/add-member`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({projectID: selectedProject.id, newMemberUID: newMember}), // Sending new member name to backend
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to add member");
+        }
+
+        alert(`${newMember} added to the project`);
+        setNewMember(""); // Reset the input field
+        setShowAddMember(false); // Hide the add member form
+      } catch (err) {
+        console.error("Error:", err);
+      }
     }
   };
 
@@ -93,28 +232,31 @@ const Dashboard = () => {
       <button onClick={() => setActiveSection('dashboard-default')}>Dashboard</button>
       <button onClick={() => setActiveSection('inbox')}>Inbox</button>
       <button onClick={() => setActiveSection('deadlines')}>Deadlines</button>
-      <button id="logoutbtn" onClick={handleLogout}>Logout
-        <img src={ExitIcon} style={{width:"15px", marginLeft:"150px"}} alt="Exit Icon" />
-      </button> {/* Logout button */}
+      <button id="logoutbtn" onClick={handleLogout}>
+        Logout
+        <img src={ExitIcon} style={{ width: "15px", marginLeft: "150px" }} alt="Exit Icon" />
+      </button>
     </div>
   );
 
   // Render the main workspace
   const renderWorkspace = () => {
-    if (activeSection === 'dashboard-default') {
+    if (activeSection === 'dashboard-default' && !selectedProject) {
       return (
         <div className="workspace">
           <h2>Projects</h2>
           <div className="project-list">
             {projects.length > 0 ? (
-              projects.map(project => (
-                <div key={project.id} className="project-card" onClick={() => setSelectedProject(project)}>
-                  <h3>{project.name}</h3>
-                </div>
-              ))
+                projects
+                .filter(project => project.name && project.name.trim()) // Only render projects with a valid name
+                .map(project => (
+                  <div key={project.id} className="project-card" onClick={() => getProjectByProjectID(project)}>
+                    <h3>{project.name}</h3>
+                  </div>
+                ))
             ) : (
-              <p>No ongoing projects</p>
-            )}
+            <p>No ongoing projects</p>
+          )}
           </div>
           <div className="add-project">
             <input
@@ -153,8 +295,8 @@ const Dashboard = () => {
             )}
           </ul>
           
-          <button onClick={() => setShowAddTask(true)}>Add Task</button>
           <button onClick={() => setShowAddMember(true)}>Add Member</button>
+          <button onClick={() => setShowAddTask(true)}>Add Task</button>
           <button onClick={() => setSelectedProject(null)}>Back to Projects</button>
 
           {showAddTask && (
@@ -201,13 +343,15 @@ const Dashboard = () => {
         </div>
       );
     }
-    return null;
   };
 
   return (
     <div className="dashboard-container">
       {renderSidebar()}
-      {selectedProject ? renderProjectDetails() : renderWorkspace()}
+      <div className="main-content">
+        {renderWorkspace()}
+        {renderProjectDetails()}
+      </div>
     </div>
   );
 };
