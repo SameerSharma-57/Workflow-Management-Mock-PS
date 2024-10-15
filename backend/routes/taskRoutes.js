@@ -31,5 +31,18 @@ export default (db) => {
     createTask(db, projectID, newTaskData, res); 
   });
 
+  //add comment to task
+  router.post("/addComment/:projectId/:taskId", (req,res) => {
+    const {projectId,taskId} = req.params;
+    addComment(db, projectId, taskId, res);
+  })
+
+  //get comments of tasks
+  router.get("/getComments/:projectId/:taskId", (req,res) => {
+    const {projectId,taskId} = req.params;
+    const comment = req.body;
+    getComments(db, projectId, taskId, comment, res);
+  })
+
   return router;
 };
