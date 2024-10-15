@@ -10,12 +10,16 @@ Every time you pull the latest changes from the repository, run the following co
 
   ```bash
   npm install
+  npm install react-toastify
+  npm install jwt-decode
   ```
 
 - In the **frontend** folder:
   ```bash
   cd frontend
   npm install
+  npm install react-toastify
+  npm install jwt-decode
   ```
 
 ### 2. Start the Application
