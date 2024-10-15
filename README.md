@@ -274,7 +274,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Add Comment
 
-- **URL:** `/addComment/:projectId/:taskId`
+- **URL:** `/tasks/addComment/:projectId/:taskId`
 - **Method:** `POST`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`
@@ -294,7 +294,7 @@ Note: All API endpoints are prefixed with `http://localhost:<portnumber>`.
 
 #### Get Comments for a Task
 
-- **URL:** `/getComments/:projectId/:taskId`
+- **URL:** `/tasks/getComments/:projectId/:taskId`
 - **Method:** `GET`
 - **Headers:**
   - `Authorization: Bearer <jwt-token>`

@@ -96,7 +96,7 @@ const generatetaskID = () => {
 export const createTask = async (db, projectID, newTaskData, res) => {
   try {
     const taskID = generatetaskID();
-    const taskWithID = { id: taskID, ...newTaskData };
+    const taskWithID = { id: taskID, comments: [], ...newTaskData }; // Ensure taskID is used consistently
 
     const projectDoc = db.collection('projects').doc(projectID);
     
@@ -106,7 +106,52 @@ export const createTask = async (db, projectID, newTaskData, res) => {
     
     res.status(201).json({ message: "Task created successfully", projectID });
   } catch (error) {
+    console.error(`Failed to create task: ${error.message}`); // Log error for debugging
     res.status(500).json({ error: `Failed to create task: ${error.message}` });
   }
 };
-  
+
+export const addComment = async (db, projectID, taskID, comment, res) => {
+  try {
+    const projectDoc = db.collection('projects').doc(projectID);
+    
+    // Update the task by adding the comment to the comments array
+    await projectDoc.update({
+      [`tasks.${taskID}.comments`]: admin.firestore.FieldValue.arrayUnion(comment) // Append the new comment
+    });
+    
+    res.status(201).json({ message: "Comment added successfully", projectID });
+  } catch (error) {
+    console.error(`Failed to add comment: ${error.message}`); // Log error for debugging
+    res.status(500).json({ error: `Failed to add comment: ${error.message}` });
+  }
+};
+
+// Function to get all comments for a specific task
+export const getComments = async (db, projectID, taskID, res) => {
+  try {
+    const projectDoc = db.collection('projects').doc(projectID);
+    const doc = await projectDoc.get();
+
+    if (!doc.exists) {
+      res.status(404).send(`No project found with projectID: ${projectID}`);
+      return;
+    }
+
+    const projectData = doc.data();
+    const tasks = projectData.tasks || []; 
+
+    const task = tasks.find(t => t.id === taskID);
+
+    if (!task) {
+      res.status(404).send(`No task found with taskID: ${taskID}`);
+      return;
+    }
+
+    res.status(200).json({ comments: task.comments || [] }); // Return comments or empty array
+  } catch (error) {
+    console.error(`Error fetching comments for taskID ${taskID} in projectID ${projectID}:`, error);
+    res.status(500).send("Error fetching comments");
+  }
+};
+
