@@ -16,7 +16,7 @@ const Taskpage =()=> {
     const [showAddMember, setShowAddMember] = useState(false); // Toggle for adding members
     const [newMember, setNewMember] = useState(""); // New member name
     
-    const API_BASE_URL = "http://localhost:5000/api";
+    const API_BASE_URL = "http://localhost:5001/api";
     const navigate = useNavigate();
     const { projectId } = useParams();
 
