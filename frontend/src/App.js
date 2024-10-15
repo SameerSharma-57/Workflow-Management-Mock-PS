@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/dashboard.jsx';
+import TaskPage from './components/taskpage.jsx';
 import { jwtDecode } from 'jwt-decode'; 
 import { Navigate } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<AuthPage />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+        <Route path="/dashboard/:projectId" element={<PrivateRoute><TaskPage/></PrivateRoute>} />
       </Routes>
     </Router>
       
