@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './dashboard.css'; // Add some basic styles (you can create this file for styling)
 import ExitIcon from '../exit.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard-default'); // To track the active sidebar section
@@ -78,8 +81,9 @@ const Dashboard = () => {
         const data = await response.json();
         setProjects([...projects, { id: data.projectID, name: newProjectName, tasks: [] }]); // Add the new project locally
         setNewProjectName(""); // Reset the input field
-        
+        toast.success('Project added successfully!');
       } catch (err) {
+        toast.error('project could not be added');
         console.error("Error:", err);
       }
     }
@@ -147,6 +151,7 @@ const Dashboard = () => {
       <div className="main-content">
         {renderWorkspace()}
       </div>
+      <ToastContainer/>
     </div>
   );
 };

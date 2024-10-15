@@ -164,7 +164,9 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  
+  .updatebtn  {
+    margin-left: auto;
+  }
   .project-details button:hover {
     background-color: #3498db;
   }

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import './dashboard.css'; 
 import { useParams } from 'react-router-dom';
 import ExitIcon from '../exit.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Taskpage =()=> {
@@ -14,7 +16,7 @@ const Taskpage =()=> {
     const [showAddMember, setShowAddMember] = useState(false); // Toggle for adding members
     const [newMember, setNewMember] = useState(""); // New member name
     
-    const API_BASE_URL = "http://localhost:5001/api";
+    const API_BASE_URL = "http://localhost:5000/api";
     const navigate = useNavigate();
     const { projectId } = useParams();
 
@@ -44,8 +46,7 @@ const Taskpage =()=> {
                     throw new Error("Failed to fetch project details");
                 }
                 const task_data = await response2.json();
-                
-                data.tasks = task_data.tasks;
+                data.tasks = task_data.tasks || [];
                 setSelectedProject(data);
                 console.log("data:",data);
             } catch (err) {
@@ -142,11 +143,13 @@ const Taskpage =()=> {
             // Reset task form fields after successful submission
             setNewTask({ task: "", assignee: "", status: "Not Started" });
             setShowAddTask(false); // Close the task form
+            toast.success('Task added successfully!');
           } catch (err) {
+            toast.error('Task could not be added');
             console.error("Error:", err);
           }
         } else {
-          console.warn("Please fill in all fields to add a task.");
+          toast.warn("Please fill in all fields to add a task.");
         }
     };
 
@@ -198,11 +201,12 @@ const Taskpage =()=> {
               throw new Error("Failed to add member");
             }
     
-            alert(`${newMember} added to the project`);
+            toast.success('member added successfully!');
             setNewMember(""); // Reset the input field
             setShowAddMember(false); // Hide the add member form
           } catch (err) {
             console.error("Error:", err);
+            toast.success('Member could not be added');
           }
         }
     };
@@ -227,16 +231,17 @@ const Taskpage =()=> {
         }
     };
     const renderProjectDetails = () => {
-        if (selectedProject) {
+        if (selectedProject && activeSection==="dashboard-default") {
           return (
             <div className="project-details">
               <h2>{selectedProject.name}</h2>
               <h3>Tasks</h3>
               <ul>
-                {selectedProject.tasks.length > 0 ? (
+                {selectedProject && selectedProject.tasks && selectedProject.tasks.length > 0 ? (
                   selectedProject.tasks.map((task, index) => (
                     <li key={index}>
                       <strong>{task.task}</strong> - {task.assignee} - <em>{task.status}</em>
+                      <button className="updatebtn">Update</button>
                     </li>
                   ))
                 ) : (
@@ -293,6 +298,7 @@ const Taskpage =()=> {
           );
         }
     };
+    
 
 
     return(
@@ -302,6 +308,7 @@ const Taskpage =()=> {
                 {renderProjectDetails()}
                 {renderWorkspace()}
             </div>
+            <ToastContainer/>
         </div>
     );
 };

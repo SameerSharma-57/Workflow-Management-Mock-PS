@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./AuthPage.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -75,7 +77,8 @@ const AuthPage = () => {
         console.log(data); // Log response for debugging
 
         if (response.ok) {
-          alert("Sign-up successful! Please log in.");
+          toast.success("Sign-up successful! Please log in.");
+
           setIsLogin(true); // Switch to login view
         } else {
           alert(data.error || "Sign-up failed.");
@@ -103,13 +106,14 @@ const AuthPage = () => {
 
         if (response.ok) {
           localStorage.setItem("token", data.token); // Store token
+          toast.success("signed in successfully!");
           navigate("/dashboard"); // Redirect to dashboard
         } else {
-          alert(data.error || "Login failed.");
+          toast.success("signed in failed");
         }
       } catch (error) {
         console.error("Login error: ", error);
-        alert("An error occurred during login.");
+        toast.success("signed in failed");
       }
     }
   };
@@ -249,6 +253,7 @@ const AuthPage = () => {
           Login with Google
         </button>
       </div>
+      <ToastContainer/>
     </div>
   );
 };
