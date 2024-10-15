@@ -14,7 +14,7 @@ const AuthPage = () => {
   const [designation, setDesignation] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const API_BASE_URL = "http://localhost:5000/api/auth";
+  const API_BASE_URL = "http://localhost:5001/api/auth";
   const navigate = useNavigate();
 
   // Function to check token validity
