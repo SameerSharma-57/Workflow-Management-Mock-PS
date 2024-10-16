@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllTasks,getTaskByTaskID,updateTaskByTaskID,createTask } from "../controllers/taskControllers.js";
+import { getAllTasks,getTaskByTaskID,updateTaskByTaskID,createTask,addComment,getComments } from "../controllers/taskControllers.js";
 
 const router = express.Router();
 
@@ -34,7 +34,8 @@ export default (db) => {
   //add comment to task
   router.post("/addComment/:projectId/:taskId", (req,res) => {
     const {projectId,taskId} = req.params;
-    addComment(db, projectId, taskId, res);
+    const comment=req.body;
+    addComment(db, projectId, taskId,comment, res);
   })
 
   //get comments of tasks

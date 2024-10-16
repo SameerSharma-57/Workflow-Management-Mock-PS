@@ -12,6 +12,7 @@ Every time you pull the latest changes from the repository, run the following co
   npm install
   npm install react-toastify
   npm install jwt-decode
+  npm install react-datepicker
   ```
 
 - In the **frontend** folder:
@@ -20,6 +21,7 @@ Every time you pull the latest changes from the repository, run the following co
   npm install
   npm install react-toastify
   npm install jwt-decode
+  npm install react-datepicker
   ```
 
 ### 2. Start the Application

@@ -114,18 +114,39 @@ export const createTask = async (db, projectID, newTaskData, res) => {
 export const addComment = async (db, projectID, taskID, comment, res) => {
   try {
     const projectDoc = db.collection('projects').doc(projectID);
-    
-    // Update the task by adding the comment to the comments array
-    await projectDoc.update({
-      [`tasks.${taskID}.comments`]: admin.firestore.FieldValue.arrayUnion(comment) // Append the new comment
-    });
-    
+
+    // Fetch the project document
+    const projectSnapshot = await projectDoc.get();
+    const projectData = projectSnapshot.data();
+
+    // Retrieve the tasks array
+    const tasks = projectData.tasks || [];
+
+    // Find the index of the task you want to update
+    const taskIndex = tasks.findIndex(task => task.id === taskID);
+    if (taskIndex === -1) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Add the comment to the selected task's comments array
+    const updatedTask = {
+      ...tasks[taskIndex], // Spread the existing task properties
+      comments: [...(tasks[taskIndex].comments || []), comment] // Add new comment to the task's comments
+    };
+
+    // Replace the task in the tasks array
+    tasks[taskIndex] = updatedTask;
+
+    // Update the project document with the modified tasks array
+    await projectDoc.update({ tasks });
+
     res.status(201).json({ message: "Comment added successfully", projectID });
   } catch (error) {
     console.error(`Failed to add comment: ${error.message}`); // Log error for debugging
     res.status(500).json({ error: `Failed to add comment: ${error.message}` });
   }
 };
+
 
 // Function to get all comments for a specific task
 export const getComments = async (db, projectID, taskID, res) => {
