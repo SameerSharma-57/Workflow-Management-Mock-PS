@@ -1,173 +1,466 @@
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f2f5;
-  }
-  
-  .dashboard-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  /* Sidebar Styles */
-  .sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .sidebar button {
-    background-color: #34495e;
-    color: #ecf0f1;
-    border: none;
-    padding: 15px;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar button:hover {
-    background-color: #2980b9;
-  }
-  
-  #logoutbtn {
-    background-color: #e74c3c;
-    margin-top: auto;
-  }
-  
-  #logoutbtn:hover {
-    background-color: #c0392b;
-  }
-  
-  /* Workspace and Project Details */
+/* General Body Styling */
 
-  
-  .workspace h2, .project-details h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #2c3e50;
-  }
-  
-  /* Project List Styles */
-  .project-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .project-card {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-  }
-  
-  .project-card h3 {
-    font-size: 20px;
-    color: #34495e;
-  }
-  
-  .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Add Project Section */
-  .add-project {
-    margin-top: 30px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .add-project input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #bdc3c7;
-    margin-right: 10px;
-    width: 250px;
-    font-size: 16px;
-  }
-  
-  .add-project button {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .add-project button:hover {
-    background-color: #2ecc71;
-  }
-  
-  /* Project Details Styling */
- .workspace, .project-details {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+/*Deadlines style*/
+.project-deadlines {
+  margin: 10px 0;
+  border: 1px solid #ccc; /* Optional: Add a border to project sections */
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9; /* Optional: Background color for projects */
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between; /* Align items properly */
+  cursor: pointer; /* Change cursor on hover */
+  padding: 10px; /* Padding for the header */
+  background-color: #f0f0f0; /* Optional: Different background color for header */
+  border-radius: 5px; /* Rounded corners for header */
+}
+
+.task-list {
+  list-style-type: none; /* Remove bullet points */
+  padding-left: 20px; /* Indent tasks */
+}
+
+.task-list li {
+  margin: 5px 0; /* Space between tasks */
+}
+
+
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.sidebar button {
+  background-color: #34495e;
+  color: #ecf0f1;
+  border: none;
+  padding: 15px;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+.add-project-button {
+  position: absolute; /* Keep it fixed */
+  bottom: 30px; /* Distance from the bottom */
+  right: 30px; /* Distance from the right */
+  background-color: #007bff; /* Button color */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+.project-input-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  z-index: 1000;
+}
+.project-input-container input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button styling */
+.project-input-container button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.project-input-container button:hover {
+  background-color: #0056b3;
+}
+
+.sidebar button:hover {
+  background-color: #2980b9;
+}
+
+#logoutbtn {
+  background-color: #e74c3c;
+  margin-top: auto;
+}
+
+#logoutbtn:hover {
+  background-color: #c0392b;
+}
+
+/* Main Content Styles */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto; /* Enable scrolling for main content */
+  height: 100vh; /* Full height */
+}
+
+/* Project Details and Workspace */
+.workspace,
+.project-details {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headings and Titles */
+.workspace h2,
+.project-details h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Project List Grid */
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Project Card Styles */
+.project-card {
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card h3 {
+  font-size: 20px;
+  color: #34495e;
+}
+
+/* Responsive Add Project Section */
+.add-project {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.add-project input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #bdc3c7;
+  margin-right: 10px;
+  width: 100%;
+  max-width: 250px;
+  font-size: 16px;
+}
+
+.add-project button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-project button:hover {
+  background-color: #2ecc71;
+}
+
+/* Task and Comment List Styling */
+.project-details h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.project-details ul {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.project-details li {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-details li strong {
+  font-size: 16px;
+}
+
+.project-details li em {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+/*Add task section*/
+
+/* Popup form container */
+.task-input {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Form input styling */
+.task-input input,
+.task-input select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button styling */
+.task-input button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.task-input button:hover {
+  background-color: #0056b3;
+}
+
+/*Memberw input*/
+.member-input {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  z-index: 1000;
+}
+.member-input input,
+.member-input select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button styling */
+.member-input button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.member-input button:hover {
+  background-color: #0056b3;
+}
+/* Comment Section */
+.comments-section {
+  margin-top: 10px;
+}
+
+.comments-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comments-section input {
+  margin-top: 10px;
+  padding: 8px;
+  width: 80%;
+  border-radius: 4px;
+  border: 1px solid #bdc3c7;
+}
+
+.comments-section button {
+  background-color: #27ae60;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.comments-section button:hover {
+  background-color: #2ecc71;
+}
+
+/* Add/Update Button in Project Details */
+.project-details button {
+  align-self: flex-start;
+  margin-top: 20px;
+  background-color: #2980b9;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.project-details button:hover {
+  background-color: #3498db;
+}
+
+.updatebtn {
+  margin-left: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* Ensures the modal is above everything */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px; /* Width of the modal */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* Pop-up content above the overlay */
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.modal-content button {
+  cursor: pointer;
+}
+
+.modal-content button:last-child {
+  background-color: #f44336; /* Red for cancel */
+  color: white;
+}
+
+.modal-content button:first-child {
+  background-color: #4CAF50; /* Green for save */
+  color: white;
+}
+
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .dashboard-container {
     flex-direction: column;
   }
-  
-  .project-details h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
   }
-  
-  .project-details ul {
-    list-style: none;
-    padding: 0;
-    flex-grow: 1;
-  }
-  
-  .project-details li {
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .project-details li strong {
-    font-size: 16px;
-  }
-  
-  .project-details li em {
+
+  .sidebar button {
+    padding: 10px;
     font-size: 14px;
-    color: #7f8c8d;
+  }
+
+  .main-content {
+    padding: 10px;
   }
   
-  /* Button in Project Details */
+  .workspace, .project-details {
+    padding: 20px;
+  }
+
+  .comments-section input {
+    width: 70%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    flex-direction: column;
+  }
+
+  .add-project input {
+    width: 100%;
+  }
+
+  .project-card h3 {
+    font-size: 18px;
+  }
+
   .project-details button {
-    align-self: flex-start;
-    margin-top: 20px;
-    background-color: #2980b9;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    padding: 8px 12px;
   }
-  .updatebtn  {
-    margin-left: auto;
-  }
-  .project-details button:hover {
-    background-color: #3498db;
-  }
-  
+}
