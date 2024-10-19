@@ -26,3 +26,4 @@ yarn-error.log*
 ./backend/config/serviceAccountKey.json
 
 
+backend/config/serviceAccountKey.json
