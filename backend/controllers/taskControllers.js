@@ -176,3 +176,37 @@ export const getComments = async (db, projectID, taskID, res) => {
   }
 };
 
+export const deleteTask = async (db, projectID, taskID, res) => {
+  try {
+      const projectDoc = db.collection("projects").doc(projectID);
+      const doc = await projectDoc.get();
+
+      if (!doc.exists) {
+          res.status(404).send(`No project found with projectID: ${projectID}`);
+          return;
+      }
+
+      const projectData = doc.data();
+      const tasks = projectData.tasks || [];
+
+      // Check if the task exists
+      const taskIndex = tasks.findIndex(t => t.id === taskID);
+      if (taskIndex === -1) {
+          res.status(404).send(`No task found with taskID: ${taskID}`);
+          return;
+      }
+
+      // Remove the task from the tasks array
+      tasks.splice(taskIndex, 1);
+
+      // Update the project document with the modified tasks array
+      await projectDoc.update({ tasks });
+
+      res.status(200).send(`Task with taskID ${taskID} has been deleted`);
+  } catch (error) {
+      console.error(`Error deleting task with taskID ${taskID} for projectID ${projectID}:`, error);
+      res.status(500).send("Error deleting task");
+  }
+};
+
+
